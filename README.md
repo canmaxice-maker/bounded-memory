@@ -130,6 +130,12 @@ Override paths via environment variables:
 
 Bounded Memory is inspired by [Hermes Agent](https://github.com/NousResearch/hermes-agent)'s session search architecture. The concept of bounded-memory with strict character limits and frozen prompt snapshots originates from Hermes's memory system design.
 
+## Changelog
+
+| Version | Date | Changes |
+|---------|------|---------|
+| [v1.0.0](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.0) | 2026-04-21 | Initial release: SQLite FTS5 session search, Hermes bounded-memory pattern for OpenClaw |
+
 ## License
 
 MIT
