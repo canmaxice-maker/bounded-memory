@@ -1,71 +1,67 @@
 ---
 name: bounded-memory
-description: SQLite FTS5 full-text search over OpenClaw session histories. Indexes session .jsonl files, stores locally in SQLite, provides fast search with optional LLM summarization (opt-in, use --no-llm to disable). Use when: (1) user asks to search/recall past conversations, (2) "did we discuss X before?", (3) finding previous decisions or context from old sessions. Triggers on phrases like "search sessions", "did we talk about", "find earlier conversation", "look up what we discussed".
+description: Gives your OpenClaw AI a perfect memory. Ask things like "did we discuss this before?", "what did we decide about X?", and "find that conversation about Y" — it searches through all your past conversations instantly. Great for recalling decisions, preferences, and context from months ago. Use when: (1) user asks "did we talk about X before?", (2) "search my old conversations", (3) "find what we decided about project Y", (4) "remember what I asked last week". Triggers: "search sessions", "find earlier conversation", "recall past discussion", "what did I say about".
 
-NOTE: LLM summarization is opt-out (use --no-llm). When enabled, only query text + result excerpts are sent to your configured LLM API endpoint. API credentials are read from ~/.openclaw/openclaw.json. All indexing and search run locally.
+NOTE: All conversation data stays on your machine — nothing is sent externally during indexing. LLM summarization is optional and disabled by default (use --no-llm to disable, or --llm to enable). Works fully offline.
 ---
 
-# Session Search
+# Bounded Memory
 
-SQLite FTS5-powered session history search for OpenClaw. Indexes all session `.jsonl` files and provides fast full-text search with optional LLM summarization.
+Gives your OpenClaw AI agent a **perfect memory** — it can recall anything you've ever discussed, even from months ago.
 
-## Setup
+## What It Does
 
-```bash
-# Index sessions (first time — full index)
-python3 skills/session-search/scripts/index-sessions.py
+Without this skill: each OpenClaw session starts fresh. The AI forgets everything from previous chats.
 
-# Search
-python3 skills/session-search/scripts/search-sessions.py "query"
+With this skill: you can ask things like:
+- "Did we discuss X before?"
+- "What did we decide about Y?"
+- "Find that conversation about Z from last month"
 
-# Options
-python3 skills/session-search/scripts/search-sessions.py "query" --limit 10 --no-llm
-```
+And get instant answers from your full conversation history.
 
-## Configuration
+## How It Works
 
-The skill auto-detects the OpenClaw agents directory (`~/.openclaw/agents`) and writes the SQLite DB to `skills/session-search/db/sessions.db` (relative to the skill directory).
+1. **Index** — Automatically scans all your past conversation files (runs once, then incrementally updates)
+2. **Search** — When you ask about something, it instantly finds all relevant past conversations
+3. **Recall** — You get the answer + context from the original discussion
 
-Override with env vars:
-- `OPENCLAW_AGENTS_DIR` — session files location
-- `SESSION_SEARCH_DB_DIR` — SQLite database directory
+No cloud services. Everything stays on your device.
 
-## Workflow
-
-1. **Index** — Parse all `.jsonl` session files, extract user/assistant messages, store in FTS5
-2. **Search** — FTS5 MATCH with BM25 ranking, optionally LLM summarize results
-
-## Script Reference
-
-| Script | Purpose |
-|--------|---------|
-| `index-sessions.py` | Scan + index session files. Use `--incremental` to skip unchanged files. |
-| `search-sessions.py` | Search indexed sessions. `--limit N` sets result count. `--no-llm` skips summarization. |
-
-## Indexing
+## Quick Start
 
 ```bash
-# Full index (all sessions)
+# Index your conversations (first time)
 python3 skills/session-search/scripts/index-sessions.py --agent main
 
-# Incremental (only changed files, fast)
-python3 skills/session-search/scripts/index-sessions.py --agent main --incremental
+# Ask about something
+python3 skills/session-search/scripts/search-sessions.py "what did we decide about the logo design"
+
+# Ask with optional AI summary
+python3 skills/session-search/scripts/search-sessions.py "your question" --limit 5
 ```
 
-Set up a daily cron for incremental updates:
+## What It Solves
+
+| Problem | Without | With Bounded Memory |
+|---------|---------|---------------------|
+| "I asked this before but can't remember the answer" | AI has no idea | Instant recall from history |
+| "What did we decide in that meeting?" | Forgot | Searches all past sessions |
+| "Did I mention this to the AI before?" | No way to know | Searches everything |
+
+## Example
+
 ```
-0 20 * * *  python3 ~/.openclaw/workspace/main/skills/session-search/scripts/index-sessions.py --agent main --incremental
+You: "Search our conversations about the N-Fellow robot project"
+→ Found 3 discussions:
+  1. [Last week] We discussed the design direction...
+  2. [2 weeks ago] You asked about pricing for...
+  3. [Last month] The AI suggested adding...
 ```
 
-## Search Examples
+## Privacy
 
-```bash
-# Basic keyword search
-python3 skills/session-search/scripts/search-sessions.py "project setup"
-
-# With LLM summary (requires API key)
-python3 skills/session-search/scripts/search-sessions.py "database schema" --limit 5
-
-# No LLM, more results
-python3 skills/session-search/scripts/search-sessions.py "deployment config" --limit 10 --no-llm
-```
+- All data stored locally (SQLite on your machine)
+- No external services for search
+- Optional AI summary — disabled by default, opt-in
+- Nothing leaves your device
