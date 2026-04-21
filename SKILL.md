@@ -1,13 +1,13 @@
 ---
 name: bounded-memory
-description: SQLite FTS5 full-text search over OpenClaw session histories. Indexes session .jsonl files, stores locally in SQLite, provides fast search with optional LLM summarization (opt-in via --no-llm to disable). Use when: (1) user asks to search/recall past conversations, (2) "did we discuss X before?", (3) finding previous decisions or context from old sessions. Triggers on phrases like "search sessions", "did we talk about", "find earlier conversation", "look up what we discussed".
+description: SQLite FTS5 full-text search over OpenClaw session histories. Indexes session .jsonl files, stores locally in SQLite, provides fast search with optional LLM summarization (opt-in, use --no-llm to disable). Use when: (1) user asks to search/recall past conversations, (2) "did we discuss X before?", (3) finding previous decisions or context from old sessions. Triggers on phrases like "search sessions", "did we talk about", "find earlier conversation", "look up what we discussed".
 
 NOTE: LLM summarization is opt-out (use --no-llm). When enabled, only query text + result excerpts are sent to your configured LLM API endpoint. API credentials are read from ~/.openclaw/openclaw.json. All indexing and search run locally.
 ---
 
 # Session Search
 
-SQLite FTS5-powered session history search for OpenClaw. Indexes all session `.jsonl` files and provides fast full-text search with optional MiniMax LLM summarization.
+SQLite FTS5-powered session history search for OpenClaw. Indexes all session `.jsonl` files and provides fast full-text search with optional LLM summarization.
 
 ## Setup
 
@@ -16,7 +16,7 @@ SQLite FTS5-powered session history search for OpenClaw. Indexes all session `.j
 python3 skills/session-search/scripts/index-sessions.py
 
 # Search
-python3 skills/session-search/scripts/search-sessions.py "关键词"
+python3 skills/session-search/scripts/search-sessions.py "query"
 
 # Options
 python3 skills/session-search/scripts/search-sessions.py "query" --limit 10 --no-llm
@@ -28,7 +28,7 @@ The skill auto-detects the OpenClaw agents directory (`~/.openclaw/agents`) and 
 
 Override with env vars:
 - `OPENCLAW_AGENTS_DIR` — session files location
-- `SESSION_SEARCH_DB` — SQLite database path
+- `SESSION_SEARCH_DB_DIR` — SQLite database directory
 
 ## Workflow
 

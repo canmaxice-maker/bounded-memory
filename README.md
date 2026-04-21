@@ -1,5 +1,8 @@
 # Bounded Memory
 
+[![Version](https://img.shields.io/badge/version-v1.0.3-blue.svg)](https://github.com/canmaxice-maker/bounded-memory)
+[![ClawHub](https://img.shields.io/badge/ClawHub-bounded--memory-green.svg)](https://clawhub.com/bounded-memory)
+
 Hermes-style bounded memory system for OpenClaw — SQLite FTS5 powered session history search.
 
 Inspired by [Hermes Agent](https://github.com/NousResearch/hermes-agent)'s memory architecture, this skill brings structured session search to OpenClaw without relying on external vector databases.
@@ -13,10 +16,10 @@ $ python3 search-sessions.py "database migration"
 🔍 2 results:
 
 1. [2026-04-15] 🤖 assistant
-   已完成 PostgreSQL 迁移，所有数据验证通过...
+   Completed PostgreSQL migration, all data validated...
 
 2. [2026-04-10] 👤 user
-   迁移后还需要做什么检查？
+   What checks are needed after migration?
 ```
 
 ## Features
@@ -26,14 +29,14 @@ $ python3 search-sessions.py "database migration"
 | **FTS5 Full-Text Search** | BM25 ranking, handles hyphenated terms (e.g. `memory-core`) |
 | **SQLite Only** | No external services for indexing — works fully offline |
 | **Incremental Indexing** | Only re-indexes changed session files |
-| **LLM Summarization** | Optional — requires `--no-llm` to disable; opt-in, not default |
+| **LLM Summarization** | Optional — use `--no-llm` to disable; opt-in |
 | **Multi-Agent Support** | Index sessions across all agents or a specific one |
 | **Privacy-First** | All data stays local — session DB excluded from git |
 
 ## Security & Privacy
 
-- **Local indexing only**: Session data is stored in a local SQLite DB (`db/sessions.db`) not sent anywhere
-- **LLM summarization is opt-out**: Use `--no-llm` to disable; when enabled, only query text + result excerpts are sent to the LLM API endpoint you configure
+- **Local indexing only**: Session data is stored in a local SQLite DB, never sent anywhere during indexing
+- **LLM summarization is opt-out**: Use `--no-llm` to disable; when enabled, only query text + result excerpts are sent to your configured LLM API endpoint
 - **API keys**: Scripts read `~/.openclaw/openclaw.json` to locate LLM API credentials for summarization; no credentials leave your machine
 - **No external services**: Indexing and search run entirely on-device
 - **Git-ignored**: The session DB (`db/sessions.db`) is excluded from version control
@@ -139,7 +142,8 @@ Bounded Memory is inspired by [Hermes Agent](https://github.com/NousResearch/her
 
 | Version | Date | Changes |
 |---------|------|---------|
-| [v1.0.2](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.2) | 2026-04-21 | Fix display name; remove session-search duplicate skill; update SKILL.md name field |
+| [v1.0.3](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.3) | 2026-04-21 | Security: add transparency section, LLM opt-in/out clarification, API key disclosure |
+| [v1.0.2](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.2) | 2026-04-21 | Fix display name; remove duplicate session-search skill |
 | [v1.0.0](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.0) | 2026-04-21 | Initial release |
 
 ## License
