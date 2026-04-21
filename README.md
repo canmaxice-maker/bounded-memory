@@ -131,7 +131,8 @@ Bounded Memory is inspired by [Hermes Agent](https://github.com/NousResearch/her
 
 | Version | Date | Changes |
 |---------|------|---------|
-| [v1.0.0](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.0) | 2026-04-21 | Initial release: SQLite FTS5 session search, Hermes bounded-memory pattern for OpenClaw |
+| [v1.0.2](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.2) | 2026-04-21 | Fix display name; remove session-search duplicate skill; update SKILL.md name field |
+| [v1.0.0](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.0) | 2026-04-21 | Initial release |
 
 ## License
 
