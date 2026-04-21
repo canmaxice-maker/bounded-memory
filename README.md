@@ -1,6 +1,6 @@
 # Bounded Memory
 
-[![Version](https://img.shields.io/badge/version-v1.0.4-blue.svg)](https://github.com/canmaxice-maker/bounded-memory)
+[![Version](https://img.shields.io/badge/version-v1.1.1-blue.svg)](https://github.com/canmaxice-maker/bounded-memory)
 [![ClawHub](https://img.shields.io/badge/ClawHub-bounded--memory-green.svg)](https://clawhub.com/bounded-memory)
 
 **Gives your OpenClaw AI a perfect memory.** Search through all your past conversations instantly — recall decisions, preferences, and context from months ago.
@@ -43,7 +43,13 @@ That means every new session, you have to re-explain:
    You get the answer + the original conversation context
 ```
 
-Everything runs **offline on your machine** — no cloud, no external services.
+## Privacy First
+
+- **100% offline search** — SQLite FTS5 runs entirely on your machine
+- **No external services** — search indexing never calls any API
+- **LLM is opt-in** — disabled by default, only enabled when you add `--llm`
+- **You control it** — uninstall anytime, remove the database anytime
+- **Git-ignored** — your conversation database is never committed
 
 ## Installation
 
@@ -52,7 +58,7 @@ Everything runs **offline on your machine** — no cloud, no external services.
 clawhub install bounded-memory
 
 # Manual
-git clone https://github.com/canmaxice-maker/bounded-memory.git
+git clone https://github.com/canmaxfire/bounded-memory.git
 mv bounded-memory ~/.openclaw/workspace/main/skills/session-search
 ```
 
@@ -62,34 +68,32 @@ mv bounded-memory ~/.openclaw/workspace/main/skills/session-search
 # 1. Index your conversations (first time)
 python3 ~/.openclaw/workspace/main/skills/session-search/scripts/index-sessions.py --agent main
 
-# 2. Search
+# 2. Search (fully offline, no external calls)
 python3 ~/.openclaw/workspace/main/skills/session-search/scripts/search-sessions.py "your question"
 
-# 3. Optional: enable AI summaries of results
-python3 ~/.openclaw/workspace/main/skills/session-search/scripts/search-sessions.py "question" --limit 5
+# 3. Optional: enable AI summaries of results (requires API key)
+python3 ~/.openclaw/workspace/main/skills/session-search/scripts/search-sessions.py "question" --llm
 ```
 
-Set up daily auto-indexing so your AI always has fresh memory:
-```bash
-# Runs automatically every day at 8pm
-# (configured via cron after install)
-```
+## Privacy Details
+
+| Feature | Behavior |
+|---------|----------|
+| Search indexing | ✅ Fully offline — SQLite FTS5 only |
+| Search execution | ✅ Fully offline — no network calls |
+| LLM summarization | ⚠️ Opt-in only — disabled by default |
+| API key | Only read if `--llm` flag is used |
+
+The `--llm` flag reads your LLM API key from `~/.openclaw/openclaw.json` and sends the conversation snippets to your configured LLM endpoint for summarization. Without `--llm`, no external calls are made.
 
 ## What Changes
 
 | Before | After |
 |--------|-------|
-| "I know we discussed this before but..." | "Found it — we talked about this on April 3rd and decided to..." |
-| AI has no idea what you asked last month | AI instantly recalls months of conversations |
-| Re-explaining context every session | Context carries across all sessions automatically |
+| "I know we discussed this before but..." | "Found it — we talked about this on April 3rd" |
+| AI has no idea what you asked last month | Instantly recalls months of conversations |
+| Re-explaining context every session | Context carries across all sessions |
 | Forgetting important decisions | Never lose track of what was decided |
-
-## Privacy
-
-- **100% local** — all data stays on your machine
-- **No cloud** — no external services involved in search
-- **You control it** — uninstall anytime, remove the database anytime
-- **Git-ignored** — your conversation database is never committed to version control
 
 ## Architecture
 
@@ -97,7 +101,7 @@ Set up daily auto-indexing so your AI always has fresh memory:
 ~/.openclaw/agents/main/sessions/*.jsonl
     ↓ (indexed once, updated daily)
 ~/.openclaw/workspace/main/skills/session-search/db/sessions.db
-    ↓ (searched on demand)
+    ↓ (searched on demand — no network)
 Instant results from your full conversation history
 ```
 
@@ -109,8 +113,8 @@ Inspired by [Hermes Agent](https://github.com/NousResearch/hermes-agent)'s bound
 
 | Version | Date | Changes |
 |---------|------|---------|
-| [v1.0.4](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.4) | 2026-04-21 | Convert docs to English, professional quality |
-| [v1.0.3](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.3) | 2026-04-21 | Security transparency, LLM opt-in/out |
+| [v1.1.1](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.1.1) | 2026-04-21 | Fix: LLM is now truly opt-in, docs match code |
+| [v1.1.0](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.1.0) | 2026-04-21 | Rewrite: plain language, user benefit focus |
 | [v1.0.0](https://github.com/canmaxice-maker/bounded-memory/releases/tag/v1.0.0) | 2026-04-21 | Initial release |
 
 ## License

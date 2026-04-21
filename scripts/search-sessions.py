@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 Session Search — FTS5 full-text search over OpenClaw session histories.
-Usage: python search-sessions.py "query" [--limit 5] [--no-llm] [--all-agents]
+Usage: python search-sessions.py "query" [--limit 5] [--llm] [--all-agents]
+
+Search is fully offline. LLM summarization is opt-in (use --llm to enable).
 """
 import sqlite3
 import os
@@ -154,7 +156,7 @@ def main():
     parser = argparse.ArgumentParser(description="Search session histories")
     parser.add_argument("query", help="Search query")
     parser.add_argument("--limit", type=int, default=5, help="Result count (default: 5)")
-    parser.add_argument("--no-llm", action="store_true", help="Skip LLM summary")
+    parser.add_argument("--llm", action="store_true", help="Enable LLM summary (requires API key in ~/.openclaw/openclaw.json)")
     args = parser.parse_args()
 
     results = fts_search(args.query, limit=args.limit)
@@ -165,7 +167,7 @@ def main():
     formatted = format_results(results)
     print(f"🔍 {len(results)} results:\n\n{formatted}")
 
-    if not args.no_llm:
+    if args.llm:
         summary, err = summarize(args.query, formatted)
         if err:
             print(f"\n{err}")
