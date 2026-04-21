@@ -1,6 +1,8 @@
 ---
 name: bounded-memory
-description: FTS5 full-text search over OpenClaw session histories. Indexes session .jsonl files into SQLite with FTS5, then searches with optional LLM summarization. Use when: (1) user asks to search/recall past conversations, (2) "did we discuss X before?", (3) finding previous decisions or context from old sessions. Triggers on phrases like "search sessions", "did we talk about", "find earlier conversation", "look up what we discussed".
+description: SQLite FTS5 full-text search over OpenClaw session histories. Indexes session .jsonl files, stores locally in SQLite, provides fast search with optional LLM summarization (opt-in via --no-llm to disable). Use when: (1) user asks to search/recall past conversations, (2) "did we discuss X before?", (3) finding previous decisions or context from old sessions. Triggers on phrases like "search sessions", "did we talk about", "find earlier conversation", "look up what we discussed".
+
+NOTE: LLM summarization is opt-out (use --no-llm). When enabled, only query text + result excerpts are sent to your configured LLM API endpoint. API credentials are read from ~/.openclaw/openclaw.json. All indexing and search run locally.
 ---
 
 # Session Search

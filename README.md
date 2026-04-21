@@ -24,11 +24,19 @@ $ python3 search-sessions.py "database migration"
 | Feature | Description |
 |---------|-------------|
 | **FTS5 Full-Text Search** | BM25 ranking, handles hyphenated terms (e.g. `memory-core`) |
-| **SQLite Only** | No external services — works offline, ~19MB per 16K messages |
+| **SQLite Only** | No external services for indexing — works fully offline |
 | **Incremental Indexing** | Only re-indexes changed session files |
-| **LLM Summarization** | Optional MiniMax/OpenAI summarization of search results |
+| **LLM Summarization** | Optional — requires `--no-llm` to disable; opt-in, not default |
 | **Multi-Agent Support** | Index sessions across all agents or a specific one |
 | **Privacy-First** | All data stays local — session DB excluded from git |
+
+## Security & Privacy
+
+- **Local indexing only**: Session data is stored in a local SQLite DB (`db/sessions.db`) not sent anywhere
+- **LLM summarization is opt-out**: Use `--no-llm` to disable; when enabled, only query text + result excerpts are sent to the LLM API endpoint you configure
+- **API keys**: Scripts read `~/.openclaw/openclaw.json` to locate LLM API credentials for summarization; no credentials leave your machine
+- **No external services**: Indexing and search run entirely on-device
+- **Git-ignored**: The session DB (`db/sessions.db`) is excluded from version control
 
 ## Installation
 
