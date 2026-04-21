@@ -1,5 +1,5 @@
 ---
-name: session-search
+name: bounded-memory
 description: FTS5 full-text search over OpenClaw session histories. Indexes session .jsonl files into SQLite with FTS5, then searches with optional LLM summarization. Use when: (1) user asks to search/recall past conversations, (2) "did we discuss X before?", (3) finding previous decisions or context from old sessions. Triggers on phrases like "search sessions", "did we talk about", "find earlier conversation", "look up what we discussed".
 ---
 
