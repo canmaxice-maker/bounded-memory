@@ -59,11 +59,11 @@ Set up a daily cron for incremental updates:
 
 ```bash
 # Basic keyword search
-python3 skills/session-search/scripts/search-sessions.py "止损"
+python3 skills/session-search/scripts/search-sessions.py "project setup"
 
 # With LLM summary (requires API key)
-python3 skills/session-search/scripts/search-sessions.py "N-Fellow 项目" --limit 5
+python3 skills/session-search/scripts/search-sessions.py "database schema" --limit 5
 
 # No LLM, more results
-python3 skills/session-search/scripts/search-sessions.py "投资决策" --limit 10 --no-llm
+python3 skills/session-search/scripts/search-sessions.py "deployment config" --limit 10 --no-llm
 ```

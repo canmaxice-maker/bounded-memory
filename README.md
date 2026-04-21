@@ -9,17 +9,14 @@ Inspired by [Hermes Agent](https://github.com/NousResearch/hermes-agent)'s memor
 OpenClaw agents are stateless by default — each session starts fresh. **Bounded Memory** indexes your conversation history into SQLite with FTS5 full-text search, so you can recall anything that's been discussed:
 
 ```
-$ python3 search-sessions.py "N-Fellow robot project"
-🔍 3 results:
+$ python3 search-sessions.py "database migration"
+🔍 2 results:
 
-1. [2026-04-18] 🤖 assistant
-   已更新 ✅ 3DOO Maker 每日市场报告...
-   
-2. [2026-04-17] 👤 user
-   这个会话id不是群，是单个飞书机器人...
+1. [2026-04-15] 🤖 assistant
+   已完成 PostgreSQL 迁移，所有数据验证通过...
 
-3. [2026-04-15] 🤖 assistant
-   👌🦞 今天辛...
+2. [2026-04-10] 👤 user
+   迁移后还需要做什么检查？
 ```
 
 ## Features
@@ -84,7 +81,7 @@ FTS5 search with optional LLM summarization.
 
 ```bash
 # Basic search
-python3 scripts/search-sessions.py "止损 投资" --limit 5
+python3 scripts/search-sessions.py "API design patterns" --limit 5
 
 # No LLM summary
 python3 scripts/search-sessions.py "query" --no-llm
